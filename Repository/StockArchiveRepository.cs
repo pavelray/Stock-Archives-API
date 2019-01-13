@@ -55,5 +55,19 @@ namespace Repository
             }
             return false;
         }
+
+        public bool DeleteTopHeaderRow()
+        {
+            string sql = "DELETE FROM stock_archives_db.stock_archives limit 1;";
+            using (IDbConnection db = _connection)
+            {
+                var result = db.Execute(sql);
+                if (result > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

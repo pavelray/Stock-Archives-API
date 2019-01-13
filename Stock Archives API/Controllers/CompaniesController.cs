@@ -23,8 +23,6 @@ namespace Stock_Archives_API.Controllers
                
                 var result = service.GetAllCompanies().ToList<Company>();
 
-                result.RemoveAt(0);
-
                 return Ok(result.OrderBy(x=> x.Symbol));
             }
             catch (Exception ex)

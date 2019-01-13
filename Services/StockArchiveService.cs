@@ -23,8 +23,15 @@ namespace Services
             try
             {
                 var result = _repository.InsertSockArchivesBulkDate(filepath);
-                _logger.Info("Inserted Bulk Data : Success");
-
+                if (result)
+                {
+                    result = _repository.DeleteTopHeaderRow();
+                    _logger.Info("Inserted Bulk Data : Success");
+                    if (result)
+                    {
+                        _logger.Info("Deletion Column Row : Success");
+                    }
+                }
                 return result;
             }
             catch (Exception ex)

@@ -7,16 +7,30 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 
 namespace Stock_Archives_API.Controllers
 {
     public class DumpDataController : ApiController
     {
+        [HttpGet]
         //[Route("api/DumpData/{filePath}")]
         public IHttpActionResult Get()
         {
-            string filePath = "C:\\prices763fefc.csv";
+            string filePath = string.Empty;
+            string path = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                filePath = path;
+            }
+            else
+            {
+                //filePath = "C:\\Users\\Pavel\\Desktop\\prices763fefc.csv";
+                filePath = HttpContext.Current.Server.MapPath("~/App_Data/prices763fefc.csv");
+            }
+
             try
             {
                 StockArchiveService service = new StockArchiveService(new StockArchiveRepository());
