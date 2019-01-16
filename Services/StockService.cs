@@ -51,5 +51,58 @@ namespace Services
                 throw ex;
             }
         }
+
+        public IEnumerable<Stock> GetBestStockByYear(string year = "2016")
+        {
+            try
+            {
+                IEnumerable<Stock> stocks = _repository.GetStockByYear(year);
+
+                if (stocks != null)
+                {
+                    var stockPerformanceList = CalculateBestStocks(stocks);
+                    _logger.Info("GetBestStockByYear : Success");
+
+                    return stockPerformanceList;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception on GetBestStockByYear" + ex.Message.ToString(), ex);
+                throw ex;
+            }
+
+            return null;
+        }
+
+        public IEnumerable<Stock> GetStockByYear(string year)
+        {
+            try
+            {
+                var result = _repository.GetStockByYear(year);
+                _logger.Info("GetStockByYear : Success");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception on GetStockByYear" + ex.Message.ToString(), ex);
+                throw ex;
+            }
+        }
+
+        public static IEnumerable<Stock> CalculateBestStocks(IEnumerable<Stock> stocks)
+        {
+            var start_date = stocks.Select(x => x.Date).Min();
+            var end_date = stocks.Select(x => x.Date).Max();
+
+            var opening_stock = stocks.Where(s => s.Date == start_date).Select(x => new {x.Open,x.Symbol }).OrderBy(x=> x.Symbol);
+            var closing_stock = stocks.Where(s => s.Date == end_date).Select(x => new { x.Close, x.Symbol }).OrderBy(x => x.Symbol);
+
+            var profit_loss_list = opening_stock.Join(closing_stock, first => first.Symbol, second => second.Symbol ,(first, second) => 
+                                    new { Performance= (((second.Close-first.Open)/first.Open)*100), Symbol = first.Symbol }).OrderByDescending(x=> x.Performance).Take(20);
+
+            return profit_loss_list as IEnumerable<Stock>;
+        }
     }
 }

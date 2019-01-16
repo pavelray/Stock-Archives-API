@@ -21,6 +21,22 @@ namespace Repository
             _connection = GetMySQLConnection();
         }
 
+        public IEnumerable<Stock> GetStockByYear(string year)
+        {
+            using (IDbConnection db = _connection)
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@year_input", year);
+
+                var result = db.Query<Stock>("GetStockDateByLatestYear", queryParameters, commandType: CommandType.StoredProcedure);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
+
         public IEnumerable<Stock> GetStocks(string companyName)
         {
             using (IDbConnection db = _connection)

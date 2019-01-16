@@ -54,5 +54,23 @@ namespace Stock_Archives_API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [HttpGet]
+        [ActionName("GetBestPerformingCompany")]
+        [Route("api/Stock/GetBestPerformingCompany/{year}")]
+        public IHttpActionResult GetBestPerformingCompany(string year)
+        {
+            try
+            {
+                StockService service = new StockService(new StockRepository());
+                var result = service.GetBestStockByYear(year);
+                return Ok(result);
+                
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }

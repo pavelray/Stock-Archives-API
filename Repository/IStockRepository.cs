@@ -11,5 +11,6 @@ namespace Repository
     {
         IEnumerable<Stock> GetStocks(string companyName);
         IEnumerable<Stock> GetStocks(string companyName, string fromDate, string toDate);
+        IEnumerable<Stock> GetStockByYear(string year);
     }
 }
