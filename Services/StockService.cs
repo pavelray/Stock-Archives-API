@@ -100,9 +100,9 @@ namespace Services
             var closing_stock = stocks.Where(s => s.Date == end_date).Select(x => new { x.Close, x.Symbol }).OrderBy(x => x.Symbol);
 
             var profit_loss_list = opening_stock.Join(closing_stock, first => first.Symbol, second => second.Symbol ,(first, second) => 
-                                    new { Performance= (((second.Close-first.Open)/first.Open)*100), Symbol = first.Symbol }).OrderByDescending(x=> x.Performance).Take(20);
+                                    new Stock(){ Performance = (((second.Close-first.Open)/first.Open)*100), Symbol = first.Symbol }).OrderByDescending(x=> x.Performance).Take(20);
 
-            return profit_loss_list as IEnumerable<Stock>;
+            return profit_loss_list;
         }
     }
 }

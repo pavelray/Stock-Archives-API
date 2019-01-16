@@ -15,6 +15,6 @@ namespace Models
         public float Low { get; set; }
         public float High { get; set; }
         public double Volume { get; set; }
-        public double Performance { get; set; }
+        public float Performance { get; set; }
     }
 }
