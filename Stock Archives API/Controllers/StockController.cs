@@ -13,6 +13,20 @@ namespace Stock_Archives_API.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class StockController : ApiController
     {
+
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            try
+            {
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [HttpGet]
         [Route("api/Stock/{companyName}")]
         public IHttpActionResult Get(string companyName)
@@ -23,6 +37,28 @@ namespace Stock_Archives_API.Controllers
                 if (!string.IsNullOrWhiteSpace(companyName))
                 {
                     var result = service.GetStocks(companyName);
+                    return Ok(result);
+                }
+                else
+                    return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Stock/{companyName}/{year}")]
+        public IHttpActionResult Get(string companyName, string year)
+        {
+            try
+            {
+                int selectedYear = System.Convert.ToInt32(year);
+                StockService service = new StockService(new StockRepository());
+                if (!string.IsNullOrWhiteSpace(companyName) && selectedYear > 0)
+                {
+                    var result = service.GetStocks(companyName, selectedYear);
                     return Ok(result);
                 }
                 else
@@ -66,6 +102,24 @@ namespace Stock_Archives_API.Controllers
                 var result = service.GetBestStockByYear(year);
                 return Ok(result);
                 
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetYearsRange")]
+        [Route("api/Stock/GetYearsRange/")]
+        public IHttpActionResult GetYearsRange()
+        {
+            try
+            {
+                StockService service = new StockService(new StockRepository());
+                var result = service.GetYears();
+                return Ok(result);
+
             }
             catch (Exception ex)
             {

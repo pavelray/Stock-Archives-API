@@ -14,7 +14,9 @@ namespace Stock_Archives_API.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
-            
+            //StockService service = new StockService(new StockRepository());
+            //var result = service.GetYears();
+
             return new string[] { "value1", "value2" };
         }
 

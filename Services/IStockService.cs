@@ -11,11 +11,15 @@ namespace Services
     {
         IEnumerable<Stock> GetStocks(string companyName);
 
+        IEnumerable<Stock> GetStocks(string companyName, int year);
+
         IEnumerable<Stock> GetStocks(string companyName, string fromDate, string toDate);
 
         IEnumerable<Stock> GetStockByYear(string year);
 
         IEnumerable<Stock> GetBestStockByYear(string year);
+
+        IEnumerable<int> GetYears();
 
 
     }

@@ -45,6 +45,7 @@
     <Compile Include="Stock.cs" />
     <Compile Include="StockArchives.cs" />
     <Compile Include="StockPerformance.cs" />
+    <Compile Include="Year.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

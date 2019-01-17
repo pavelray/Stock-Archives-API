@@ -36,6 +36,22 @@ namespace Services
             }
         }
 
+        public IEnumerable<Stock> GetStocks(string companyName,int year)
+        {
+            try
+            {
+                var result = _repository.GetStocks(companyName, year);
+                _logger.Info("GetStocks : Success");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception on GetStocks" + ex.Message.ToString(), ex);
+                throw ex;
+            }
+        }
+
         public IEnumerable<Stock> GetStocks(string companyName, string fromDate, string toDate)
         {
             try
@@ -103,6 +119,23 @@ namespace Services
                                     new Stock(){ Performance = (((second.Close-first.Open)/first.Open)*100), Symbol = first.Symbol }).OrderByDescending(x=> x.Performance).Take(20);
 
             return profit_loss_list;
+        }
+
+        public IEnumerable<int> GetYears()
+        {
+            try
+            {
+                Year result = _repository.GetYears();
+                IEnumerable<int> yearRange = Enumerable.Range(result.Min, (result.Max- result.Min)+1);
+                _logger.Info("GetYear range is : Success");
+                
+                return yearRange;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception on GetYear" + ex.Message.ToString(), ex);
+                throw ex;
+            }
         }
     }
 }

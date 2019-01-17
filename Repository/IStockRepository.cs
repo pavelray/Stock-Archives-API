@@ -10,7 +10,9 @@ namespace Repository
     public interface IStockRepository
     {
         IEnumerable<Stock> GetStocks(string companyName);
+        IEnumerable<Stock> GetStocks(string companyName , int year);
         IEnumerable<Stock> GetStocks(string companyName, string fromDate, string toDate);
         IEnumerable<Stock> GetStockByYear(string year);
+        Year GetYears();
     }
 }

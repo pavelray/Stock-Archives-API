@@ -70,5 +70,34 @@ namespace Repository
             }
             return null;
         }
+
+        public IEnumerable<Stock> GetStocks(string companyName, int year)
+        {
+            using (IDbConnection db = _connection)
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@companyName", companyName);
+
+                var result = db.Query<Stock>("GetStocks", queryParameters, commandType: CommandType.StoredProcedure).Where(x=>x.Date.Year==year);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
+
+        public Year GetYears()
+        {
+            using (IDbConnection db = _connection)
+            {
+                var result = db.Query<Year>("Select Year(Max(Date)) as Max,Year(Min(Date)) as Min FROM stock_archives_db.stock_archives;").SingleOrDefault();
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
     }
 }
